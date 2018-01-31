@@ -1,0 +1,36 @@
+dataSource:
+  ds_0: !!com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.112.4.34:3306/springboot_db
+    username: root
+    password: 123456
+  ds_1: !!com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.112.4.34:3306/springboot_db1
+    username: root
+    password: 123456
+
+keyGeneratorClass: com.dangdang.ddframe.rdb.sharding.keygen.DefaultKeyGenerator
+
+tables:
+
+  t_author:
+    actualTables: t_author
+    generateKeyColumns:
+      - columnName: id
+    tableStrategy:
+      shardingColumns: id
+      algorithmExpression: t_author
+
+  
+#默认数据库分片策略
+defaultDatabaseStrategy:
+  shardingColumns: id
+  algorithmExpression: ds_${id.longValue().mod(3).intdiv(2)}
+
+defaultTableStrategy:
+  shardingColumns: none
+  algorithmClassName: com.dangdang.ddframe.rdb.sharding.api.strategy.table.NoneTableShardingAlgorithm
+
+props:
+  metrics.enable: false

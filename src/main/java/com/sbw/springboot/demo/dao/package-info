@@ -1,0 +1,2 @@
+
+jdbcTemplate 方式与数据库交互，采用dao模式
